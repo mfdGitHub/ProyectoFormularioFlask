@@ -1,30 +1,27 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0
-    .0/css/bootstrap.min.css">
-    <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min
-    .js"></script>
-    <!-- Popper JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/p
-    opper.min.js"></script>
-    <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.
-    min.js"></script>
-    <title>{% block title %}{% endblock %}</title>
-</head>
-<body>
-    {% block content %}
-    {% endblock %}
+<html lang=es>
+    <head>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" >
+        <title> {% block tilte %} {% endblock %} </title>
+    </head>
+    <body>
+        {% block content%}
+        {% endblock %}
 
-    <footer>
-        <div class="container">
-            <div class="row">
-                <p class="copyright text-muted">&copy; Curso Flask 2016</p>
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <p class="copyright text-muted">&copy; Curso Flask</p>
+                </div>
             </div>
-        </div>
-    </footer>
-</body>
+        </footer>
+
+        <img src="{{ url_for('static', filename='img/cubo.jpg') }}" width="100" height="100">
+
+        <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+                
+    </body>
 </html>
