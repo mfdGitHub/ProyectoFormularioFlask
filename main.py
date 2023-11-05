@@ -6,7 +6,7 @@ import forms
 
 app = Flask(__name__)
 
-@app.route('/', method = ['GET', 'POST'])
+@app.route('/', methods = ['GET', 'POST'])
 def index():
     comment_form = forms.ComentForm(request.form)
     if request.method == 'POST':
