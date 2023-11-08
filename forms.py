@@ -2,7 +2,7 @@
 from wtforms import Form 
 from wtforms import StringField
 from wtforms.fields import EmailField
-
+from wtforms import HiddenField
 from wtforms import validators
 
 
@@ -24,7 +24,7 @@ class ComentForm(Form):
                 validators.Email(message='Ingresa un email valido!!')
             ])
     comment = StringField('Comentario')
-    honeypot = StringField('', 
+    honeypot = HiddenField('', 
             [
                 length_honeypot
             ])    
