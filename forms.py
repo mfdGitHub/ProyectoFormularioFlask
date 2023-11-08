@@ -5,6 +5,11 @@ from wtforms.fields import EmailField
 
 from wtforms import validators
 
+
+def length_honeypot(form, field):
+    if len(field.data) > 0:
+        raise validators.ValidationError('El campo debe estar vacio.')
+
 class ComentForm(Form):
     username = StringField('username', 
             [
@@ -19,4 +24,7 @@ class ComentForm(Form):
                 validators.Email(message='Ingresa un email valido!!')
             ])
     comment = StringField('Comentario')
-    
+    honeypot = StringField('', 
+            [
+                length_honeypot
+            ])    
