@@ -31,7 +31,7 @@ class ComentForm(Form):
             ])
 
 class LoginForm(Form):
-    username = StringField('username',
+    username = StringField('Username',
                 [
                     validators.DataRequired(message = 'El username es requerido!!!'),
                     validators.length(min=4, max=25, message='Ingrese un username valido!!!')
