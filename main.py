@@ -1,10 +1,13 @@
 from flask import Flask
 from flask import render_template 
 from flask import request
-
+from flask_wtf import CsrfProtect
 import forms
 
 app = Flask(__name__)
+app.secret_key = 'my_secret_key' #buena practica poner en variables de session os.get(variable_de_session)
+csrf = CsrfProtect(app)
+
 
 @app.route('/', methods = ['GET', 'POST'])
 def index():
