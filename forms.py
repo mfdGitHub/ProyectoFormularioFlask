@@ -1,6 +1,7 @@
 #from wtforms import Form 
 from wtforms import Form 
 from wtforms import StringField
+from wtforms import PasswordField
 from wtforms.fields import EmailField
 from wtforms import HiddenField
 from wtforms import validators
@@ -27,4 +28,15 @@ class ComentForm(Form):
     honeypot = HiddenField('', 
             [
                 length_honeypot
-            ])    
+            ])
+
+class LoginForm(Form):
+    username = StringField('username',
+                [
+                    validators.DataRequired(message = 'El username es requerido!!!'),
+                    validators.length(min=4, max=25, message='Ingrese un username valido!!!')
+                ])
+    password = PasswordField('Password', 
+                [
+                    validators.DataRequired(message='El password es requerido!!')
+                ])
