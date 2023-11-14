@@ -19,6 +19,19 @@ def index():
     title = "Curso Flask"
     return render_template('index.html', title = title, form = comment_form)
 
+@app.route('/login')
+def login():
+    login_form = forms.LoginForm()
+    return render_template('login.html', form = login_form)
+
+@app.route('/cookie')
+def cookie():
+    return render_template('cookie.html')
+
+@app.route('/comment', methods = ['GET', 'POST'])
+def comment():
+    pass
+
 if __name__=='__main__':
     app.run(debug=True, port=8000)
 
