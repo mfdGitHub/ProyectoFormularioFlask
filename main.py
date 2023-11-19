@@ -1,12 +1,12 @@
 from flask import Flask
 from flask import render_template 
 from flask import request
-from flask_wtf import CsrfProtect
+from flask_wtf import CSRFProtect
 import forms
 
 app = Flask(__name__)
 app.secret_key = 'my_secret_key' #buena practica poner en variables de session os.get(variable_de_session)
-csrf = CsrfProtect(app)
+csrf = CSRFProtect(app)
 
 
 @app.route('/', methods = ['GET', 'POST'])
@@ -22,7 +22,7 @@ def index():
     title = "Curso Flask"
     return render_template('index.html', title = title, form = comment_form)
 
-@app.route('/login')
+@app.route('/login', methods = ['GET', 'POST'])
 def login():
     login_form = forms.LoginForm()
     return render_template('login.html', form = login_form)
