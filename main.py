@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import render_template 
 from flask import request
+from flask import make_response
 from flask_wtf import CSRFProtect
 import forms
 
@@ -19,6 +20,8 @@ def index():
     else:
         print ("Error en el formulario")
 
+    custome_cookie = request.cookies.get('custome_cookiess', 'Undefined')
+    print(custome_cookie)
     title = "Curso Flask"
     return render_template('index.html', title = title, form = comment_form)
 
@@ -29,7 +32,9 @@ def login():
 
 @app.route('/cookie')
 def cookie():
-    return render_template('cookie.html')
+    response = make_response(render_template('cookie.html'))
+    response.set_cookie('custome_cookie', 'Codigofacilito')
+    return response
 
 @app.route('/comment', methods = ['GET', 'POST'])
 def comment():
