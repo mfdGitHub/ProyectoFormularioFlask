@@ -3,6 +3,7 @@ from flask import render_template
 from flask import request
 from flask import make_response
 from flask import session
+from flask import flash 
 
 from flask import url_for 
 from flask import redirect 
@@ -17,22 +18,14 @@ csrf = CSRFProtect(app)
 
 @app.route('/', methods = ['GET', 'POST'])
 def index():
-    comment_form = forms.ComentForm(request.form)
-    if request.method == 'POST' and comment_form.validate():
-        print (comment_form.username.data)
-        print (comment_form.email.data)
-        print (comment_form.comment.data)
-    else:
-        print ("Error en el formulario")
-
+    
     #custome_cookie = request.cookies.get('custome_cookiess', 'Undefined')
     #print(custome_cookie)
     if 'username' in session:
         username = session['username']
-        print(username)
-
+        
     title = "Curso Flask"
-    return render_template('index.html', title = title, form = comment_form)
+    return render_template('index.html', title = title)
 
 @app.route('/logout')
 def logout():
@@ -45,6 +38,9 @@ def logout():
 def login():
     login_form = forms.LoginForm(request.form)
     if request.method == 'POST' and login_form.validate():
+        username = login_form.username.data
+        success_message = 'Bienvenido {}'.format(username)
+        flash(success_message)
         session['username'] = login_form.username.data
 
     return render_template('login.html', form = login_form)
