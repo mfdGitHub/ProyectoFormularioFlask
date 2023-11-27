@@ -15,6 +15,10 @@ app = Flask(__name__)
 app.secret_key = 'my_secret_key' #buena practica poner en variables de session os.get(variable_de_session)
 csrf = CSRFProtect(app)
 
+@app.errorhandler(401)
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html')
 
 @app.route('/', methods = ['GET', 'POST'])
 def index():
