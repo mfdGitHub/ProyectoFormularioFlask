@@ -10,6 +10,7 @@ from flask import redirect
 
 from flask_wtf import CSRFProtect
 import forms
+import json 
 
 app = Flask(__name__)
 app.secret_key = 'my_secret_key' #buena practica poner en variables de session os.get(variable_de_session)
@@ -20,16 +21,23 @@ csrf = CSRFProtect(app)
 def page_not_found(e):
     return render_template('404.html')
 
+@app.before_request 
+def before_request():
+    pass 
+
+@app.after_request
+def after_request(response):
+    return response 
+
 @app.route('/', methods = ['GET', 'POST'])
 def index():
-    
-    #custome_cookie = request.cookies.get('custome_cookiess', 'Undefined')
-    #print(custome_cookie)
+    contact_form = forms.contactForm(request.form)
     if 'username' in session:
         username = session['username']
+        print(username)
         
-    title = "Curso Flask"
-    return render_template('index.html', title = title)
+    title = "Index"
+    return render_template('index.html', title = title, form = contact_form)
 
 @app.route('/logout')
 def logout():
@@ -58,6 +66,12 @@ def cookie():
 @app.route('/comment', methods = ['GET', 'POST'])
 def comment():
     pass
+@app.route('/ajax-login', methods = ['POST'])
+def ajax_login():
+    print(request.form)
+    username = request.form['username']
+    response = {'status': 200, 'username': username, 'id': 1 }
+    return json.dumps(response)
 
 if __name__=='__main__':
     app.run(debug=True, port=8000)
