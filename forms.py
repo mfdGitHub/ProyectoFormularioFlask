@@ -12,7 +12,7 @@ def length_honeypot(form, field):
         raise validators.ValidationError('El campo debe estar vacio.')
 
 class ComentForm(Form):
-    username = StringField('username', 
+    username = StringField('Username', 
             [
                 validators.DataRequired(message = 'El username es requerido'),
                 validators.length(min=4, max=25, message="Ingrese un username valido!!!")
