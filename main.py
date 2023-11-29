@@ -23,21 +23,28 @@ def page_not_found(e):
 
 @app.before_request 
 def before_request():
-    pass 
-
-@app.after_request
-def after_request(response):
-    return response 
+    print("1")
+    if 'username' not in session:
+        print(request.endpoint)
+        print("El usuario necesita login!!")
+    if 'username' not in session and request.endpoint not in ['index']:
+        return redirect
 
 @app.route('/', methods = ['GET', 'POST'])
 def index():
-    contact_form = forms.contactForm(request.form)
+    print("2")
+    contact_form = forms.ComentForm(request.form)
     if 'username' in session:
         username = session['username']
         print(username)
         
     title = "Index"
     return render_template('index.html', title = title, form = contact_form)
+
+@app.after_request
+def after_request(response):
+    print("3")
+    return response 
 
 @app.route('/logout')
 def logout():
