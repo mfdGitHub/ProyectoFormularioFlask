@@ -4,7 +4,7 @@ from flask import request
 from flask import make_response
 from flask import session
 from flask import flash 
-
+from flask import g 
 from flask import url_for 
 from flask import redirect 
 
@@ -23,16 +23,11 @@ def page_not_found(e):
 
 @app.before_request 
 def before_request():
-    print("1")
-    if 'username' not in session:
-        print(request.endpoint)
-        print("El usuario necesita login!!")
-    if 'username' not in session and request.endpoint not in ['index']:
-        return redirect
+    g.test = 'test1'
 
 @app.route('/', methods = ['GET', 'POST'])
 def index():
-    print("2")
+    print(g.test)
     contact_form = forms.ComentForm(request.form)
     if 'username' in session:
         username = session['username']
@@ -43,7 +38,7 @@ def index():
 
 @app.after_request
 def after_request(response):
-    print("3")
+    print(g.test)
     return response 
 
 @app.route('/logout')
