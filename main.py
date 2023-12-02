@@ -8,13 +8,15 @@ from flask import g
 from flask import url_for 
 from flask import redirect 
 
+from config import DevelopmentConfig
+
 from flask_wtf import CSRFProtect
 import forms
 import json 
 
 app = Flask(__name__)
-app.secret_key = 'my_secret_key' #buena practica poner en variables de session os.get(variable_de_session)
-csrf = CSRFProtect(app)
+app.config.from_object(DevelopmentConfig)
+csrf = CSRFProtect()
 
 @app.errorhandler(401)
 @app.errorhandler(404)
@@ -76,5 +78,6 @@ def ajax_login():
     return json.dumps(response)
 
 if __name__=='__main__':
-    app.run(debug=True, port=8000)
+    csrf.init_app(app)
+    app.run(port=8000)
 
