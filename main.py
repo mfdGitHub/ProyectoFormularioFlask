@@ -9,6 +9,8 @@ from flask import url_for
 from flask import redirect 
 
 from config import DevelopmentConfig
+from models import db 
+from models import User
 
 from flask_wtf import CSRFProtect
 import forms
@@ -79,5 +81,10 @@ def ajax_login():
 
 if __name__=='__main__':
     csrf.init_app(app)
+    db.init_app(app)
+
+    with app.app_context():
+        db.create_all()
+
     app.run(port=8000)
 
