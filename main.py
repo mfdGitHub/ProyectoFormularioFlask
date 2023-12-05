@@ -63,6 +63,24 @@ def login():
 
     return render_template('login.html', form = login_form)
 
+@app.route('/create', methods = ['GET','POST'])
+def create():
+    create_form = forms.CreateForm(request.form)
+    if request.method == 'POST' and create_form.validate():
+        
+        user = User(create_form.username.data,
+                    create_form.password.data,
+                    create_form.email.data)
+        
+        db.session.add(user)
+        db.session.commit()
+
+        username = create_form.username.data 
+        success_message = 'Usuario registrado en la base de datos'
+        flash(success_message)
+
+    return render_template('create.html', form = create_form)
+
 @app.route('/cookie')
 def cookie():
     response = make_response(render_template('cookie.html'))
