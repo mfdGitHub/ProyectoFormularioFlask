@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash
+from werkzeug.security import check_password_hash
 import datetime 
 
 db = SQLAlchemy()
@@ -21,3 +22,6 @@ class User(db.Model):
 
     def __create_password(self, password):
         return generate_password_hash(password)
+    
+    def verify_password(self, password):
+        return check_password_hash(self.password, password)
