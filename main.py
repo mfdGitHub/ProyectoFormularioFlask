@@ -27,11 +27,15 @@ def page_not_found(e):
 
 @app.before_request 
 def before_request():
-    g.test = 'test1'
+    if 'username' not in session and request.endpoint in ['comment']:
+        return redirect(url_for('login'))
+    elif 'username' in session and request.endpoint in ['login','create']:
+        return redirect(url_for('index'))
+
+
 
 @app.route('/', methods = ['GET', 'POST'])
 def index():
-    print(g.test)
     contact_form = forms.ComentForm(request.form)
     if 'username' in session:
         username = session['username']
@@ -42,7 +46,6 @@ def index():
 
 @app.after_request
 def after_request(response):
-    print(g.test)
     return response 
 
 @app.route('/logout')
@@ -57,8 +60,18 @@ def login():
     login_form = forms.LoginForm(request.form)
     if request.method == 'POST' and login_form.validate():
         username = login_form.username.data
-        success_message = 'Bienvenido {}'.format(username)
-        flash(success_message)
+        password = login_form.password.data
+
+        user = User.query.filter_by(username = username).first()
+        if user is not None and user.verify_password(password):
+            success_message = 'Bienvenido {}'.format(username)
+            flash(success_message)
+            session['username'] = username
+            return redirect(url_for('index'))
+        else:
+            error_message = 'Usuario o password no validos!!!'
+            flash(error_message)
+
         session['username'] = login_form.username.data
 
     return render_template('login.html', form = login_form)
