@@ -16,6 +16,7 @@ from models import Comment
 from flask_wtf import CSRFProtect
 import forms
 import json 
+from helpers import date_format
 
 app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
@@ -115,8 +116,9 @@ def reviews(page = 1):
     per_page = 3
     comments = Comment.query.join(User).add_columns(
                                     User.username, 
-                                    Comment.text).paginate(page=page,per_page=3,error_out=False)
-    return render_template('reviews.html', comments = comments)
+                                    Comment.text,
+                                    Comment.created_date).paginate(page=page,per_page=3,error_out=False)
+    return render_template('reviews.html', comments = comments, date_format = date_format)
 
 @app.route('/ajax-login', methods = ['POST'])
 def ajax_login():
