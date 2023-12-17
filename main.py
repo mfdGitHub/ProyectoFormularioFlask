@@ -109,6 +109,15 @@ def comment():
     title = "Curso Flask"
     return render_template('comment.html', title = title, form = comment_form)
 
+@app.route('/reviews/', methods=['GET'])
+@app.route('/reviews/<int:page>', methods=['GET'])
+def reviews(page = 1):
+    per_page = 3
+    comments = Comment.query.join(User).add_columns(
+                                    User.username, 
+                                    Comment.text).paginate(page=page,per_page=3,error_out=False)
+    return render_template('reviews.html', comments = comments)
+
 @app.route('/ajax-login', methods = ['POST'])
 def ajax_login():
     print(request.form)
