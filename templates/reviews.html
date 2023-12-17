@@ -1,0 +1,12 @@
+{% extends "base/base.html" %}
+{% block title %} Review {% endblock %}
+{% block content %}
+
+    <div class="container">
+        {% if comments %}
+            {% for comment in comments.items %}
+                <p> {{ comment.text }} </p>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock %}
