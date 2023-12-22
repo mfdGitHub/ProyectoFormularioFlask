@@ -18,9 +18,13 @@ import forms
 import json 
 from helpers import date_format
 
+from flask_mail import Mail
+from flask_mail import Message 
+
 app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
 csrf = CSRFProtect()
+mail = Mail()
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -83,6 +87,13 @@ def create():
         db.session.add(user)
         db.session.commit()
 
+        msg = Message('Gracias por tu registro!', 
+                       sender = app.config['MAIL_USERNAME'],
+                       recipients = [user.email])
+        
+        msg.html = render_template('email.html', username = user.username)
+        mail.send(msg)
+
         username = create_form.username.data 
         success_message = 'Usuario registrado en la base de datos'
         flash(success_message)
@@ -130,6 +141,7 @@ def ajax_login():
 if __name__=='__main__':
     csrf.init_app(app)
     db.init_app(app)
+    mail.init_app(app)
 
     with app.app_context():
         db.create_all()
