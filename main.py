@@ -7,6 +7,7 @@ from flask import flash
 from flask import g 
 from flask import url_for 
 from flask import redirect 
+from flask import copy_current_request_context
 
 from config import DevelopmentConfig
 from models import db 
@@ -21,10 +22,20 @@ from helpers import date_format
 from flask_mail import Mail
 from flask_mail import Message 
 
+import threading
+
 app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
 csrf = CSRFProtect()
 mail = Mail()
+
+def send_email(user_email, username):
+    msg = Message('Gracias por tu registro!', 
+                       sender = app.config['MAIL_USERNAME'],
+                       recipients = [user_email])
+        
+    msg.html = render_template('email.html', username = username)
+    mail.send(msg)
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -87,12 +98,14 @@ def create():
         db.session.add(user)
         db.session.commit()
 
-        msg = Message('Gracias por tu registro!', 
-                       sender = app.config['MAIL_USERNAME'],
-                       recipients = [user.email])
-        
-        msg.html = render_template('email.html', username = user.username)
-        mail.send(msg)
+        @copy_current_request_context
+        def send_message(email, username):
+            send_email(email, username)
+
+        sender = threading.Thread(name='mail_sender', 
+                                  target=send_email, 
+                                  args=(user.email, user.username))
+        sender.start()
 
         username = create_form.username.data 
         success_message = 'Usuario registrado en la base de datos'
